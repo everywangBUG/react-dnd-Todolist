@@ -1,0 +1,12 @@
+.box {
+  height: 50px;
+  width: 50px;
+  background-color: skyblue;
+}
+
+.container {
+  height: 300px;
+  width: 300px;
+  background-color: #fff;
+  border: 1px solid rgb(0, 0, 0);
+}
