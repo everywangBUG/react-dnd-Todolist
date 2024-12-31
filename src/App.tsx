@@ -1,15 +1,20 @@
 import React, { useRef } from 'react'
 import './App.css'
-import { useDrag, useDrop } from 'react-dnd'
+import { useDrag, useDragLayer, useDrop } from 'react-dnd'
+
+interface ItemProps {
+  color: string
+}
 
 export const Container: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null)
+  const [boxes, setBoxes] = React.useState<ItemProps[]>([])
   
   const [,drop] = useDrop(() => {
     return {
       accept: 'box',
-      drop(item) {
-        console.log(item)
+      drop(item: ItemProps) {
+        setBoxes((boxes) => [...boxes, item])
       }
     }
   })
@@ -17,24 +22,55 @@ export const Container: React.FC = () => {
   drop(ref)
   
   return (
-    <div className='container' ref={ref}></div>
+    <div className='container' ref={ref}>
+      {boxes.map((box, index) => (
+        <Box key={index} color={box.color} />
+      ))}
+    </div>
   )
 }
 
-export const Box: React.FC = () => {
+interface BoxProps {
+  color: string
+}
+
+export const Box: React.FC = (props: BoxProps) => {
   const ref = useRef<HTMLDivElement>(null)
   
-  const [, drag] = useDrag({
+  const { color } = props
+
+  const [{dragging}, drag] = useDrag({
     type: 'box',
     item: {
-      color: 'blue'
+      color
     },
+    collect: (monitor) => ({
+      dragging: monitor.isDragging()
+    }) 
   })
 
   drag(ref)
 
   return (
-    <div className='box' ref={ref}></div>
+    <div ref={ref} className={ dragging ? 'box dragging' : 'box'} style={{ backgroundColor: color || 'skyblue'}}></div>
+  )
+}
+
+export const DragLayer: React.FC = () => {
+  const {isDragging, item, currentOffset} = useDragLayer((monitor) => ({
+    item: monitor.getItem(),
+    isDragging: monitor.isDragging(),
+    currentOffset: monitor.getSourceClientOffset()
+  }))
+
+  if (!isDragging) {
+    return null
+  }
+  
+  return (
+    <div className='drag-layer' style={{ left: currentOffset?.x, top: currentOffset?.y }}>
+      {item.color}111
+    </div>
   )
 }
 
@@ -43,7 +79,11 @@ export const App: React.FC = () => {
   return (
     <>
       <Container />
-      <Box />
+      <Box color='skyblue '/>
+      <Box color='red' />
+      <Box color='green' />
+      <Box color='pink' />
+      <DragLayer />
     </>
   )
 }

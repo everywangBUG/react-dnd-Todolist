@@ -10,3 +10,11 @@
   background-color: #fff;
   border: 1px solid rgb(0, 0, 0);
 }
+
+.dragging {
+  opacity: 0.3;
+}
+
+.drag-layer {
+  position: fixed;
+}
