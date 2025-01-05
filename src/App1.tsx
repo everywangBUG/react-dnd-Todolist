@@ -8,6 +8,11 @@ interface CardProps {
   index: number
 }
 
+interface DragData {
+  id: number
+  index: number
+}
+
 
 interface CardItem {
   id: number
@@ -24,19 +29,22 @@ const Card: React.Fc<CardProps> = (props: CardProps ) => {
   const { data, swapCard, index } = props;
   const cardRef = useRef<HTMLDivElement>(null)
 
-  const [, drag] = useDrag({
+  const [{ dragging }, drag] = useDrag({
     type: 'card',
     item: {
       id: data.id,
       index
-    }
+    },
+    collect: (monitor) => ({
+      dragging: monitor.isDragging()
+    })
   })
 
   const [, drop] =useDrop({
     accept: 'card',
-    drop: (item) => {
-      console.log(item)
+    hover: (item: DragData) => {
       swapCard(item.index, index)
+      item.index = index
     }
   })
 
@@ -47,7 +55,7 @@ const Card: React.Fc<CardProps> = (props: CardProps ) => {
  
 
   return (
-      <div className="card-item" key={data.id} ref={cardRef}>{data.content}</div>
+      <div className={dragging ? 'dragging card-item' : 'card-item'} key={data.id} ref={cardRef}>{data.content}</div>
   )
 }
 
