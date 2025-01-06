@@ -10,6 +10,7 @@ import './index.css';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+console.log(React, 'React')
 root.render(
   <DndProvider backend={HTML5Backend}>
     <ToDoList />

@@ -6,9 +6,9 @@ interface ItemProps {
   color: string
 }
 
-export const Container: React.FC = () => {
-  const ref = useRef<HTMLDivElement>(null)
-  const [boxes, setBoxes] = React.useState<ItemProps[]>([])
+export const Container = () => {
+  const ref = useRef(null)
+  const [boxes, setBoxes] = React.useState([])
   
   const [,drop] = useDrop(() => {
     return {
@@ -34,8 +34,8 @@ interface BoxProps {
   color: string
 }
 
-export const Box: React.FC = (props: BoxProps) => {
-  const ref = useRef<HTMLDivElement>(null)
+export const Box = (props: BoxProps) => {
+  const ref = useRef(null)
   
   const { color } = props
 
@@ -56,7 +56,7 @@ export const Box: React.FC = (props: BoxProps) => {
   )
 }
 
-export const DragLayer: React.FC = () => {
+export const DragLayer = () => {
   const {isDragging, item, currentOffset} = useDragLayer((monitor) => ({
     item: monitor.getItem(),
     isDragging: monitor.isDragging(),
@@ -75,7 +75,7 @@ export const DragLayer: React.FC = () => {
 }
 
 
-export const App: React.FC = () => {
+export const App = () => {
   return (
     <>
       <Container />

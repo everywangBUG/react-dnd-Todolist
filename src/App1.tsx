@@ -6,6 +6,7 @@ interface CardProps {
   data: CardItem
   swapCard: (index1: number, index2: number) => void
   index: number
+  key: number
 }
 
 interface DragData {
@@ -25,9 +26,9 @@ const cardListArr = [
   { id: 3, content: 'Card 3' },
   { id: 4, content: 'Card 4' },
 ]
-const Card: React.Fc<CardProps> = (props: CardProps ) => {
+const Card = (props: CardProps ) => {
   const { data, swapCard, index } = props;
-  const cardRef = useRef<HTMLDivElement>(null)
+  const cardRef = useRef(null)
 
   const [{ dragging }, drag] = useDrag({
     type: 'card',
@@ -59,7 +60,7 @@ const Card: React.Fc<CardProps> = (props: CardProps ) => {
   )
 }
 
-export const App1: React.FC = () => {
+export const App1 = () => {
   const [cardList, setCardList] = useState(cardListArr)
 
   const swapCard = useCallback((index1: number, index2: number) => {
