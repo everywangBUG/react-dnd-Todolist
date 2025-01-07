@@ -14,6 +14,7 @@ module.exports = {
         '200': '200px',
         '100': '100px',
         '40': '40px',
+        '10': '10px',
       },
       flex: {
         2: 2
@@ -22,4 +23,3 @@ module.exports = {
   },
   plugins: [],
 }
-

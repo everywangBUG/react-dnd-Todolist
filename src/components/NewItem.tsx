@@ -29,7 +29,7 @@ export const NewItem: FC<NewItemProps> = (props) => {
         "leading-100 text-center text-2xl",
         "bg-green-300 flex justify-center items-center",
         "cursor-move select-none",
-        dragging ? 'opacity-50' : '',
+        dragging ? 'border-dashed bg-white' : '',
         className)
   
   return (
