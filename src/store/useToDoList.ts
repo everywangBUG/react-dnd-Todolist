@@ -1,4 +1,5 @@
-import { create } from "zustand";
+import { create, StateCreator } from "zustand"
+import { persist } from 'zustand/middleware'
 
 export interface ListItem {
   id: string
@@ -16,7 +17,7 @@ type Action = {
   updateItem: (updateItem: ListItem) => void
 }
 
-export const useToDoList = create<State & Action>((set) => ({
+const stateCreator: StateCreator<State & Action> = ((set) => ({
   list: [],
   addItem: (item: ListItem, id: string) => {
     set((state) => {
@@ -64,3 +65,5 @@ export const useToDoList = create<State & Action>((set) => ({
     })
   }
 }))
+
+export const useToDoList = create<State & Action>()(persist(stateCreator, { name: 'todo-list' }))
