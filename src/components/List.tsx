@@ -1,7 +1,8 @@
-import React, { FC} from 'react'
+import React, { FC, Fragment} from 'react'
 import c from 'classnames'
 import { Gap } from './Gap.tsx'
 import { Item } from './Item.tsx'
+import { useToDoList } from '../store/useToDoList.ts'
 
 interface ListProps {
   className?: string | string[]
@@ -9,82 +10,24 @@ interface ListProps {
 export const List: FC<ListProps> = (props) => {
   const { className } = props
   const cs = c('h-full', className)
+  const list = useToDoList((state) => state.list)
   return (
     <div className={cs}>
-      <Gap />
-      <Item />
-      <Gap />
-      <Item />
-      <Gap />
-      <Item />
-      <Gap />
-      <Item />
-      <Gap />
-      <Item />
-      <Gap />
-      <Item />
-      <Gap />
-      <Item />
-      <Gap />
-      <Item />
-      <Gap />
-      <Item />
-      <Gap />
-      <Item />
-      <Gap />
+      {
+        list.length
+        ?
+        list.map((item) => (
+          <Fragment key={item.id}>
+              <Gap id={item.id}/>
+              <Item data={item} />
+            </Fragment>
+          ))
+        :
+        <div className='text-center h-full text-2xl flex justify-center items-center flex-col'>
+          <span>暂无待办事项</span>
+          <Gap className='w-full' />
+        </div>
+      }
     </div>
   )
 }
-
-// function Gap () {
-//   const ref = useRef(null)
-//   const [{ isOver }, drop] = useDrop(() => {
-//     return {
-//       accept: 'new-item',
-//       item: {},
-//       collect: (monitor) => ({
-//         isOver: monitor.isOver()
-//       })
-//     }
-//   })
-
-//   const cs = c(
-//     "h-10",
-//     isOver ? 'bg-red-300' : ''
-//   )
-
-//   useEffect(() => {
-//     drop(ref)
-//   }, [])
-  
-//   return <div ref={ref} className={cs}></div>
-// }
-
-// function Item() {
-//   const ref = useRef(null)
-//   const [{ dragging }, drag] = useDrag(() => {
-//     return {
-//       type: 'list-item',
-//       item: {},
-//       collect: (monitor) => ({
-//         dragging: monitor.isDragging()
-//       })
-//     }
-//   })
-
-//   useEffect(() => {
-//     drag(ref)
-//   }, [])
-
-//   return (<div className={c(
-//             "h-100 border-2 border-black bg-blue-300 p-10",
-//             "flex justify-start items-center",
-//             "text-xl tracking-wide",
-//             dragging ? "border-dashed bg-white" : ""
-//           )}
-//           ref={ref}
-//         >
-//           <input type='checkbox' className='mr-2 w-40 h-40'/>
-//           <p>代办事项</p>
-//         </div>)
-// }

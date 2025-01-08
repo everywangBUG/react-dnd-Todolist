@@ -1,18 +1,22 @@
 import React, { FC, useEffect, useRef } from 'react'
 import c from 'classnames'
 import { useDrop } from 'react-dnd'
+import { useToDoList } from '../store/useToDoList.ts'
 
-interface ToDoListProps {
+interface GarbageBinProps {
   className?: string | string[]
 }
 
-export const GarbageBin: FC<ToDoListProps> = (props) => {
+export const GarbageBin: FC<GarbageBinProps> = (props) => {
   const { className } = props
   const ref = useRef(null)
+  const deleteItem = useToDoList((state) => state.deleteItem)
   const [{ isOver }, drop] = useDrop(() => {
     return {
       accept: 'list-item',
-      drop(item) {},
+      drop(item: {id: string}) {
+        deleteItem(item.id)
+      },
       collect: (monitor) => {
         return {
           isOver: monitor.isOver()

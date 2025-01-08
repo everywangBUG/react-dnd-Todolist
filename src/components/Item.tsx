@@ -1,13 +1,24 @@
-import React, { FC, useEffect, useRef } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { useDrag } from 'react-dnd'
 import c from 'classnames'
+import { ListItem, useToDoList } from '../store/useToDoList.ts'
 
-export const Item: FC = () => {
+interface ItemProps {
+  data: ListItem
+}
+
+export const Item: FC<ItemProps> = (props) => {
+  const { id, status, content } = props.data
+  const updateItem = useToDoList((state) => state.updateItem)
+  const [editing, setEditing] = useState(false)
+  const [editingContent, setEditingContent] = useState(content)
   const ref = useRef(null)
     const [{ dragging }, drag] = useDrag(() => {
       return {
         type: 'list-item',
-        item: {},
+        item: {
+          id
+        },
         collect: (monitor) => ({
           dragging: monitor.isDragging()
         })
@@ -25,8 +36,37 @@ export const Item: FC = () => {
               dragging ? "border-dashed bg-white" : ""
             )}
             ref={ref}
+            onDoubleClick={() => setEditing(true)}
           >
-            <input type='checkbox' className='mr-2 w-40 h-40'/>
-            <p>代办事项</p>
+            <input
+              type="checkbox"
+              className='w-40 h-40 mr-10'
+              checked={status === 'done' ? true : false}
+              onChange={(e) => {
+                updateItem({
+                  ...props.data,
+                  status: e.target.checked ? 'done' : 'todo'
+                })
+              }}
+            />
+            {
+              editing
+              ?
+              <input
+                value={editingContent}
+                onChange={(e) => {
+                  setEditingContent(e.target.value)
+                }}
+                onBlur={() => {
+                  setEditing(false)
+                  updateItem({
+                    ...props.data,
+                    content: editingContent
+                  })
+                }}
+              />
+              :
+              <p>{content}</p>
+            }
           </div>)
 }

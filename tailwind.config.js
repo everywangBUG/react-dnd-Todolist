@@ -6,16 +6,16 @@ module.exports = {
   ],
   theme: {
     extend: {
-      width: {
-        '1000': '1000px'
-      },
-      height: {
+      spacing: {
+        '1000': '1000px',
         '600': '600px',
         '200': '200px',
         '100': '100px',
         '40': '40px',
         '10': '10px',
       },
+      width: {},
+      height: {},
       flex: {
         2: 2
       }

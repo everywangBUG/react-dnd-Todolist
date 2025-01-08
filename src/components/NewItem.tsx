@@ -33,6 +33,6 @@ export const NewItem: FC<NewItemProps> = (props) => {
         className)
   
   return (
-    <div className={cs} ref={ref}>新的代办事项</div>
+    <div className={cs} ref={ref}>新的待办事项</div>
   )
 }
